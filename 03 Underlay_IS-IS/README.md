@@ -36,7 +36,7 @@ Cхема лабораторного стенда в Eve-NG:
 <details>
   <summary>Конфигурация SPINE</summary>
 <pre><code>
-
+#Loopback-интерфейс
 interface loopback0
   ip address 10.120.1.1/32
 
@@ -74,7 +74,7 @@ router isis 1
 
 
 <details>
-  <summary>Конфигурация SPINE</summary>
+  <summary>Конфигурация LEAF</summary>
 <pre><code>
 
 interface loopback0
