@@ -56,15 +56,19 @@ Cхема лабораторного стенда в Eve-NG:
   <summary>Конфигурация SPINE</summary>
 <pre><code>
 #Loopback-интерфейс
+
 interface loopback0
   ip address 10.120.1.1/32
 
 #Интерфейс к R1
+
 interface Ethernet1/1
   no switchport
   ip address 10.120.0.2/30
   no shutdown
+
 #Интерфейс к LEAF
+
 interface Ethernet1/2
   no switchport
   mtu 9216
@@ -75,7 +79,9 @@ interface Ethernet1/2
   isis circuit-type level-1
   ip router isis 1
   no shutdown
+
 #Настройка IGP ISIS  
+
 router isis 1
   net 49.0001.0101.2000.1001.00
   is-type level-1
@@ -83,7 +89,9 @@ router isis 1
   address-family ipv4 unicast
     router-id loopback0
     advertise interface loopback0 level-1
+
 #Настройка BGP  	
+
 router bgp 65001
   address-family ipv4 unicast
     network 10.120.1.1/32
@@ -111,15 +119,20 @@ router bgp 65001
 <details>
   <summary>Конфигурация LEAF</summary>
 <pre><code>
+#Loopback-интерфейс
 
 interface loopback0
   ip address 10.120.1.4/32
+
 #Интерфейс к клиентам
+
 interface Ethernet1/1
   no switchport
   ip address 10.120.129.1/24
   no shutdown
+
 #Интерфейс к SPINE
+
 interface Ethernet1/2
   no switchport
   mtu 9216
@@ -128,7 +141,9 @@ interface Ethernet1/2
   no isis hello-padding always
   ip router isis 1
   no shutdown
+
 #Настройка ISIS
+
 router isis 1
   net 49.0001.0101.2000.1004.00
   is-type level-1
@@ -136,7 +151,9 @@ router isis 1
   address-family ipv4 unicast
     router-id loopback0
     advertise interface loopback0 level-1
+
 #Настройка BGP
+
 router bgp 65012
   router-id 10.120.1.4
   address-family ipv4 unicast
