@@ -31,6 +31,82 @@ Cхема лабораторного стенда в Eve-NG:
 | 0001 | NX-SPINE-1 NX-SPINE-2 | 10.120.1.0/24, 10.120.128.0/17 | 
 | 0002 | NX-SPINE-3 | 10.120.2.0/24, 10.120.64.0/18 | 
 
+
+
+<details>
+  <summary>Конфигурация SPINE</summary>
+<pre><code>
+
+interface loopback0
+  ip address 10.120.1.1/32
+
+#Интерфейс к R1
+interface Ethernet1/1
+  no switchport
+  ip address 10.120.0.2/30
+  isis network point-to-point
+  isis circuit-type level-2
+  ip router isis 1
+  no shutdown
+#Интерфейс к LEAF
+interface Ethernet1/2
+  no switchport
+  mtu 9216
+  medium p2p
+  ip unnumbered loopback0
+  no isis hello-padding always
+  isis network point-to-point
+  isis circuit-type level-1
+  ip router isis 1
+  no shutdown
+#Настройка ISIS  
+router isis 1
+  net 49.0001.0101.2000.1001.00
+  metric-style transition
+  address-family ipv4 unicast
+    distribute level-1 into level-2 all
+    summary-address 10.120.1.0/24 level-2
+    summary-address 10.120.128.0/17 level-2
+    router-id loopback0
+    advertise interface loopback0 level-1
+</code></pre>
+</details>
+
+
+<details>
+  <summary>Конфигурация SPINE</summary>
+<pre><code>
+
+interface loopback0
+  ip address 10.120.1.4/32
+#Интерфейс к клиентам
+interface Ethernet1/1
+  no switchport
+  ip address 10.120.129.1/24
+  ip router isis 1
+  isis passive-interface level-1
+  no shutdown
+#Интерфейс к SPINE
+interface Ethernet1/2
+  no switchport
+  mtu 9216
+  medium p2p
+  ip unnumbered loopback0
+  no isis hello-padding always
+  ip router isis 1
+  no shutdown
+# Настройка ISIS
+router isis 1
+  net 49.0001.0101.2000.1004.00
+  is-type level-1
+  metric-style transition
+  address-family ipv4 unicast
+	router-id loopback0
+    advertise interface loopback0 level-1
+</code></pre>
+</details>
+
+
 Маршруты:
 
 1. R1
